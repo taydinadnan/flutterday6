@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterday6/google_signin_controller.dart';
+import 'package:flutterday6/login_controller.dart';
 import 'package:flutterday6/login_page.dart';
 import 'package:provider/provider.dart';
 
@@ -15,9 +15,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => GoogleSignInController(),
+          create: (context) => LoginController(),
           child: const LoginPage(),
-        )
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

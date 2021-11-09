@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterday6/google_signin_controller.dart';
+import 'package:flutterday6/login_controller.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
@@ -23,9 +23,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   loginUI() {
-    return Consumer<GoogleSignInController>(
+    return Consumer<LoginController>(
       builder: (context, model, child) {
-        if (model.googleAccount != null) {
+        if (model.userDetails != null) {
           return loggedInUI(model);
         } else {
           return loginControls(context);
@@ -34,26 +34,26 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  loggedInUI(GoogleSignInController model) {
+  loggedInUI(LoginController model) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Center(
           child: CircleAvatar(
-            backgroundImage:
-                Image.network(model.googleAccount!.photoUrl ?? '').image,
+            backgroundImage: Image.network(
+              model.userDetails!.photoUrl ?? '',
+            ).image,
             radius: 50,
           ),
         ),
-        Text(model.googleAccount!.displayName ?? ''),
-        Text(model.googleAccount!.email),
+        Text(model.userDetails!.displayName ?? ''),
+        Text(model.userDetails!.email ?? ''),
         ActionChip(
           avatar: const Icon(Icons.logout),
           label: const Text('Logout'),
           onPressed: () {
-            Provider.of<GoogleSignInController>(context, listen: false)
-                .logOut();
+            Provider.of<LoginController>(context, listen: false).logOut();
           },
         ),
       ],
@@ -71,15 +71,20 @@ class _LoginPageState extends State<LoginPage> {
               width: 250,
             ),
             onTap: () {
-              Provider.of<GoogleSignInController>(context, listen: false)
-                  .login();
+              Provider.of<LoginController>(context, listen: false)
+                  .googleLogin();
             },
           ),
+          const SizedBox(height: 10),
           GestureDetector(
             child: Image.asset(
               "assets/login-button-png-18026.png",
               width: 250,
             ),
+            onTap: () {
+              Provider.of<LoginController>(context, listen: false)
+                  .facebookLogin();
+            },
           ),
         ],
       ),
